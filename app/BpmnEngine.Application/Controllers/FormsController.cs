@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BpmnEngine.Application.Controllers;
 
-public class HomeController : Controller
+public class FormsController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
+    private readonly ILogger<FormsController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
+    public FormsController(ILogger<FormsController> logger)
     {
         _logger = logger;
     }

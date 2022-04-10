@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\" />
+    <Folder Include="Handlers\" />
+    <Folder Include="Processes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BpmnEngine.Camunda\BpmnEngine.Camunda.csproj" />
+  </ItemGroup>
+
 </Project>
