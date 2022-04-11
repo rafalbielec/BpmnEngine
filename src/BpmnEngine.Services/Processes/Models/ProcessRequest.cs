@@ -3,5 +3,5 @@
 namespace BpmnEngine.Services.Processes.Models;
 
 public record ProcessRequest(
-    ServicesConstants.Processes Process, 
+    ServicesConstants.Processes Process,
     Dictionary<string, Variable> ProcessVariables);
