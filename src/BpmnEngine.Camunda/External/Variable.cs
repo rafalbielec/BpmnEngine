@@ -7,8 +7,12 @@ namespace BpmnEngine.Camunda.External;
 
 public class Variable : IEquatable<Variable>
 {
+    public object? Value { get; }
+    public VariableType Type { get; }
+
+
     [ExcludeFromCodeCoverage]
-    public static Variable Boolean(bool value) => new Variable(value, VariableType.Boolean);
+    public static Variable Boolean(bool value) => new(value, VariableType.Boolean);
 
     public bool AsBoolean()
     {
@@ -17,7 +21,7 @@ public class Variable : IEquatable<Variable>
     }
 
     [ExcludeFromCodeCoverage]
-    public static Variable Short(short value) => new Variable(value, VariableType.Short);
+    public static Variable Short(short value) => new(value, VariableType.Short);
 
     public short AsShort()
     {
@@ -26,7 +30,7 @@ public class Variable : IEquatable<Variable>
     }
 
     [ExcludeFromCodeCoverage]
-    public static Variable Integer(int value) => new Variable(value, VariableType.Integer);
+    public static Variable Integer(int value) => new(value, VariableType.Integer);
 
     public int AsInteger()
     {
@@ -35,7 +39,7 @@ public class Variable : IEquatable<Variable>
     }
 
     [ExcludeFromCodeCoverage]
-    public static Variable Long(long value) => new Variable(value, VariableType.Long);
+    public static Variable Long(long value) => new(value, VariableType.Long);
 
     [ExcludeFromCodeCoverage]
     public long AsLong()
@@ -45,7 +49,7 @@ public class Variable : IEquatable<Variable>
     }
 
     [ExcludeFromCodeCoverage]
-    public static Variable Double(double value) => new Variable(value, VariableType.Double);
+    public static Variable Double(double value) => new(value, VariableType.Double);
 
     public double AsDouble()
     {
@@ -121,7 +125,7 @@ public class Variable : IEquatable<Variable>
         Guard.NotNull(value, nameof(value));
         return new Variable(value.ToString(SaveOptions.DisableFormatting), VariableType.Xml);
     }
-
+    
     public XElement AsXElement()
     {
         EnsureIsOfType(VariableType.Xml);
@@ -130,7 +134,7 @@ public class Variable : IEquatable<Variable>
     }
 
     [ExcludeFromCodeCoverage]
-    public static Variable Null() => new Variable(null, VariableType.Null);
+    public static Variable Null() => new(null, VariableType.Null);
 
     [ExcludeFromCodeCoverage]
     private void EnsureIsOfType(VariableType type)
@@ -146,9 +150,6 @@ public class Variable : IEquatable<Variable>
         Value = value;
         Type = type;
     }
-
-    public object? Value { get; }
-    public VariableType Type { get; }
 
     [ExcludeFromCodeCoverage]
     public bool Equals(Variable? other)

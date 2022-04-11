@@ -1,9 +1,10 @@
+using System.Diagnostics;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-namespace BpmnEngine.Camunda.Client;
+namespace BpmnEngine.Camunda.Extensions;
 
 internal static class HttpClientExtensions
 {
@@ -42,20 +43,21 @@ internal static class HttpClientExtensions
         return response;
     }
 
-    internal static Task<T> ReadJsonAsync<T>(this HttpResponseMessage responseMessage) =>
-        responseMessage.Content.ReadJsonAsync<T>();
-
-    internal static async Task<T> ReadJsonAsync<T>(this HttpContent content)
+    internal static Task<T> ReadJsonAsync<T>(this HttpResponseMessage responseMessage)
     {
+        return responseMessage.Content.ReadJsonAsync<T>();
+    }
 
+    private static async Task<T> ReadJsonAsync<T>(this HttpContent content)
+    {
 #if DEBUG
         var str = await content.ReadAsStringAsync();
-        System.Diagnostics.Debug.WriteLine("===");
-        System.Diagnostics.Debug.WriteLine(str);
-        System.Diagnostics.Debug.WriteLine("===");
+        Debug.WriteLine("===");
+        Debug.WriteLine(str);
+        Debug.WriteLine("===");
 #endif
 
-        using var stream = await content.ReadAsStreamAsync();
+        await using var stream = await content.ReadAsStreamAsync();
         using var streamReader = new StreamReader(stream);
         using var jsonReader = new JsonTextReader(streamReader);
 
@@ -63,9 +65,13 @@ internal static class HttpClientExtensions
         return result;
     }
 
-    internal static bool IsJson(this HttpContentHeaders headers) =>
-        headers.ContentType?.MediaType == JsonContent.JsonContentType;
+    private static bool IsJson(this HttpContentHeaders headers)
+    {
+        return headers.ContentType?.MediaType == JsonContent.JsonContentType;
+    }
 
-    internal static bool IsJson(this HttpResponseMessage message) =>
-        message.Content?.Headers?.IsJson() ?? false;
+    internal static bool IsJson(this HttpResponseMessage message)
+    {
+        return message.Content?.Headers?.IsJson() ?? false;
+    }
 }

@@ -1,4 +1,4 @@
-namespace BpmnEngine.Camunda.Configuration;
+namespace BpmnEngine.Camunda.Extensions;
 
 internal static class ObjectExtensions
 {

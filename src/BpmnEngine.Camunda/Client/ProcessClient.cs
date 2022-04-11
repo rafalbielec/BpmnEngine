@@ -1,6 +1,7 @@
 using BpmnEngine.Camunda.Abstractions;
 using BpmnEngine.Camunda.Client.Requests;
 using BpmnEngine.Camunda.Client.Responses;
+using BpmnEngine.Camunda.Extensions;
 using BpmnEngine.Camunda.External;
 
 namespace BpmnEngine.Camunda.Client;

@@ -1,5 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
+using BpmnEngine.Camunda.Client.Responses;
 using BpmnEngine.Camunda.Exceptions;
+using BpmnEngine.Camunda.Extensions;
 
 namespace BpmnEngine.Camunda.Client;
 

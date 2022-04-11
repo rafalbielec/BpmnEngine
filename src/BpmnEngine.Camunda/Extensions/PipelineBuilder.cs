@@ -1,7 +1,7 @@
 using BpmnEngine.Camunda.Abstractions;
 using BpmnEngine.Camunda.External;
 
-namespace BpmnEngine.Camunda.Configuration;
+namespace BpmnEngine.Camunda.Extensions;
 
 public class PipelineBuilder : IPipelineBuilder
 {

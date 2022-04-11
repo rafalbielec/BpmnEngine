@@ -32,7 +32,7 @@ public sealed class BpmnErrorResult : IExecutionResult
                 externalTask.Id,
                 new BpmnErrorRequest(externalTask.WorkerId, ErrorCode, ErrorMessage)
                 {
-                    Variables = Variables,
+                    Variables = Variables
                 }
             );
         }
@@ -45,7 +45,7 @@ public sealed class BpmnErrorResult : IExecutionResult
             await client.ReportFailureAsync(externalTask.Id, new ReportFailureRequest(externalTask.WorkerId)
             {
                 ErrorMessage = e.ErrorType,
-                ErrorDetails = e.ErrorMessage,
+                ErrorDetails = e.ErrorMessage
             });
         }
     }

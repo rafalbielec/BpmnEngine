@@ -9,22 +9,22 @@ public class FetchAndLockRequest
     }
 
     /// <summary>
-    /// The id of the worker on which behalf tasks are fetched
+    ///     The id of the worker on which behalf tasks are fetched
     /// </summary>
     public string WorkerId { get; }
 
     /// <summary>
-    /// The maximum number of tasks to return
+    ///     The maximum number of tasks to return
     /// </summary>
     public int MaxTasks { get; }
 
     /// <summary>
-    /// A value, which indicates whether the task should be fetched based on its priority or arbitrarily
+    ///     A value, which indicates whether the task should be fetched based on its priority or arbitrarily
     /// </summary>
     public bool UsePriority { get; set; }
 
     /// <summary>
-    /// The long polling timeout in milliseconds
+    ///     The long polling timeout in milliseconds
     /// </summary>
     public int AsyncResponseTimeout { get; set; }
 
@@ -39,17 +39,17 @@ public class FetchAndLockRequest
         }
 
         /// <summary>
-        /// The topic's name
+        ///     The topic's name
         /// </summary>
         public string TopicName { get; }
 
         /// <summary>
-        /// The duration to lock the external tasks for in milliseconds
+        ///     The duration to lock the external tasks for in milliseconds
         /// </summary>
         public int LockDuration { get; }
 
         /// <summary>
-        /// If <c>true</c> only local variables will be fetched
+        ///     If <c>true</c> only local variables will be fetched
         /// </summary>
         public bool LocalVariables { get; set; }
 
@@ -57,10 +57,16 @@ public class FetchAndLockRequest
 
         public string? BusinessKey { get; set; }
 
-        /// <summary>Determines whether serializable variable values (typically variables that store custom Java objects) should be deserialized on server side (default false).</summary>
+        /// <summary>
+        ///     Determines whether serializable variable values (typically variables that store custom Java objects) should be
+        ///     deserialized on server side (default false).
+        /// </summary>
         public bool DeserializeValues { get; set; }
 
-        /// <summary>Determines whether custom extension properties defined in the BPMN activity of the external task (e.g. via the Extensions tab in the Camunda modeler) should be included in the response. Default: false.</summary>
+        /// <summary>
+        ///     Determines whether custom extension properties defined in the BPMN activity of the external task (e.g. via the
+        ///     Extensions tab in the Camunda modeler) should be included in the response. Default: false.
+        /// </summary>
         public bool IncludeExtensionProperties { get; set; }
 
         public string? ProcessDefinitionId { get; set; }
@@ -71,7 +77,11 @@ public class FetchAndLockRequest
 
         public IReadOnlyCollection<string>? ProcessDefinitionKeyIn { get; set; }
 
-        /// <summary>A dictionary used for filtering tasks based on process instance variable values. The property Key of the dictionary represents a process variable name, while the property value represents the process variable value to filter tasks by.</summary>
+        /// <summary>
+        ///     A dictionary used for filtering tasks based on process instance variable values. The property Key of the
+        ///     dictionary represents a process variable name, while the property value represents the process variable value to
+        ///     filter tasks by.
+        /// </summary>
         public IReadOnlyDictionary<string, string>? ProcessVariables { get; set; }
 
         public bool? WithoutTenantId { get; set; }

@@ -3,7 +3,7 @@ using BpmnEngine.Camunda.Execution;
 using BpmnEngine.Camunda.External;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BpmnEngine.Camunda.Configuration;
+namespace BpmnEngine.Camunda.Extensions;
 
 public class CamundaWorkerBuilder : ICamundaWorkerBuilder
 {
@@ -14,7 +14,6 @@ public class CamundaWorkerBuilder : ICamundaWorkerBuilder
     }
 
     public IServiceCollection Services { get; }
-
     public string WorkerId { get; }
 
     public ICamundaWorkerBuilder AddEndpointProvider<TProvider>()
@@ -27,15 +26,6 @@ public class CamundaWorkerBuilder : ICamundaWorkerBuilder
     public ICamundaWorkerBuilder AddTopicsProvider<TProvider>() where TProvider : class, ITopicsProvider
     {
         Services.AddTransient<ITopicsProvider, TProvider>();
-        return this;
-    }
-
-    internal CamundaWorkerBuilder AddFetchAndLockRequestProvider(
-        Func<string, IServiceProvider, IFetchAndLockRequestProvider> factory
-    )
-    {
-        Services.AddSingleton(provider => factory(WorkerId, provider));
-
         return this;
     }
 
@@ -66,6 +56,15 @@ public class CamundaWorkerBuilder : ICamundaWorkerBuilder
     public ICamundaWorkerBuilder ConfigureEvents(Action<WorkerEvents> configureAction)
     {
         Services.Configure(configureAction);
+        return this;
+    }
+
+    internal CamundaWorkerBuilder AddFetchAndLockRequestProvider(
+        Func<string, IServiceProvider, IFetchAndLockRequestProvider> factory
+    )
+    {
+        Services.AddSingleton(provider => factory(WorkerId, provider));
+
         return this;
     }
 }

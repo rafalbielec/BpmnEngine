@@ -5,11 +5,6 @@ namespace BpmnEngine.Camunda.Results;
 
 public sealed class FailureResult : IExecutionResult
 {
-    public string ErrorMessage { get; }
-    public string? ErrorDetails { get; }
-    public int? Retries { get; set; }
-    public int? RetryTimeout { get; set; }
-
     public FailureResult(Exception ex) : this(ex.Message, ex.StackTrace)
     {
     }
@@ -19,6 +14,11 @@ public sealed class FailureResult : IExecutionResult
         ErrorMessage = Guard.NotNull(errorMessage, nameof(errorMessage));
         ErrorDetails = errorDetails;
     }
+
+    public string ErrorMessage { get; }
+    public string? ErrorDetails { get; }
+    public int? Retries { get; set; }
+    public int? RetryTimeout { get; set; }
 
     public async Task ExecuteResultAsync(IExternalTaskContext context)
     {

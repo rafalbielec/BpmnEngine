@@ -1,7 +1,6 @@
 using BpmnEngine.Application.FrontEnd;
 using BpmnEngine.Camunda;
-using BpmnEngine.Camunda.Client;
-using BpmnEngine.Camunda.Configuration;
+using BpmnEngine.Camunda.Extensions;
 using BpmnEngine.Services.Abstractions;
 using BpmnEngine.Services.Handlers;
 using BpmnEngine.Services.Processes;

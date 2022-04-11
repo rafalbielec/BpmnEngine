@@ -9,8 +9,7 @@ public class ExternalTaskContext
     public ExternalTaskContext(ExternalTask externalTask)
     {
         TaskId = Guard.NotEmptyAndNotNull(externalTask.Id, nameof(externalTask.Id));
-        ProcessInstanceId =
-            Guard.NotEmptyAndNotNull(externalTask.ProcessInstanceId, nameof(externalTask.ProcessInstanceId));
+        ProcessInstanceId = Guard.NotEmptyAndNotNull(externalTask.ProcessInstanceId, nameof(externalTask.ProcessInstanceId));
         BusinessKey = Guard.NotEmptyAndNotNull(externalTask.BusinessKey, nameof(externalTask.BusinessKey));
         TopicName = Guard.NotEmptyAndNotNull(externalTask.TopicName, nameof(externalTask.TopicName));
         Variables = externalTask.Variables ?? new Dictionary<string, Variable>();
@@ -55,8 +54,5 @@ public class ExternalTaskContext
             Variables.Add(ServicesConstants.FormHandlingVariables.LastStep, Variable.String(value));
     }
 
-    public override string ToString()
-    {
-        return $"External Service Task for '{TopicName}' in {BusinessKey}";
-    }
+    public override string ToString() => $"External Service Task for '{TopicName}' in {BusinessKey}";
 }

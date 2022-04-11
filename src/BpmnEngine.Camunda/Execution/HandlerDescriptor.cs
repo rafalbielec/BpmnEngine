@@ -11,6 +11,5 @@ public sealed class HandlerDescriptor
     }
 
     public ExternalTaskDelegate HandlerDelegate { get; }
-
     public HandlerMetadata Metadata { get; }
 }

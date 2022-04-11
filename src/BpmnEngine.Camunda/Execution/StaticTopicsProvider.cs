@@ -12,14 +12,15 @@ public sealed class StaticTopicsProvider : ITopicsProvider
         _topics = handlerDescriptors.SelectMany(ConvertDescriptorToTopic).ToList();
     }
 
+    public IReadOnlyCollection<FetchAndLockRequest.Topic> GetTopics() => _topics;
     private static IEnumerable<FetchAndLockRequest.Topic> ConvertDescriptorToTopic(HandlerDescriptor descriptor)
     {
         return descriptor.Metadata.TopicNames
-            .Select(topicName => MakeTopicRequest(descriptor.Metadata, topicName));
+            .Select(topicName => MapToTopicRequest(descriptor.Metadata, topicName));
     }
 
-    private static FetchAndLockRequest.Topic MakeTopicRequest(HandlerMetadata metadata, string topicName) =>
-        new FetchAndLockRequest.Topic(topicName, metadata.LockDuration)
+    private static FetchAndLockRequest.Topic MapToTopicRequest(HandlerMetadata metadata, string topicName) =>
+        new(topicName, metadata.LockDuration)
         {
             LocalVariables = metadata.LocalVariables,
             Variables = metadata.Variables,
@@ -28,11 +29,6 @@ public sealed class StaticTopicsProvider : ITopicsProvider
             ProcessVariables = metadata.ProcessVariables,
             TenantIdIn = metadata.TenantIds,
             DeserializeValues = metadata.DeserializeValues,
-            IncludeExtensionProperties = metadata.IncludeExtensionProperties,
+            IncludeExtensionProperties = metadata.IncludeExtensionProperties
         };
-
-    public IReadOnlyCollection<FetchAndLockRequest.Topic> GetTopics()
-    {
-        return _topics;
-    }
 }

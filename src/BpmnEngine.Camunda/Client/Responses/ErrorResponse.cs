@@ -1,4 +1,4 @@
-namespace BpmnEngine.Camunda.Client;
+namespace BpmnEngine.Camunda.Client.Responses;
 
 public class ErrorResponse
 {

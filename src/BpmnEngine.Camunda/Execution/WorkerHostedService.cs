@@ -6,14 +6,15 @@ namespace BpmnEngine.Camunda.Execution;
 
 public sealed class WorkerHostedService : BackgroundService
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly int _numberOfWorkers;
+    private readonly IServiceProvider _serviceProvider;
 
     public WorkerHostedService(IServiceProvider serviceProvider, int numberOfWorkers)
     {
         _serviceProvider = Guard.NotNull(serviceProvider, nameof(serviceProvider));
-        _numberOfWorkers =
-            Guard.GreaterThanOrEqual(numberOfWorkers, CamundaConstants.MinimumParallelExecutors, nameof(numberOfWorkers));
+        _numberOfWorkers = Guard.GreaterThanOrEqual(numberOfWorkers,
+            CamundaConstants.MinimumParallelExecutors,
+            nameof(numberOfWorkers));
     }
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
@@ -22,6 +23,7 @@ public sealed class WorkerHostedService : BackgroundService
             .Select(_ => _serviceProvider.GetRequiredService<ICamundaWorker>())
             .Select(worker => worker.RunAsync(stoppingToken))
             .ToList();
+
         return Task.WhenAll(activeTasks);
     }
 }

@@ -9,11 +9,10 @@ public class HandlerVariablesAttribute : Attribute
     }
 
     public IReadOnlyList<string> Variables { get; }
-
     public bool LocalVariables { get; set; }
 
     /// <summary>
-    ///Setting this to true will retrieve all the process variables from Camunda without the need of knowing their names
+    ///     Retrieves all the process variables from Camunda.
     /// </summary>
     public bool AllVariables { get; set; }
 }

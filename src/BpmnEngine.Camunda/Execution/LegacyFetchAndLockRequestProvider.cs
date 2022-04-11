@@ -6,8 +6,8 @@ namespace BpmnEngine.Camunda.Execution;
 
 internal class LegacyFetchAndLockRequestProvider : IFetchAndLockRequestProvider
 {
-    private readonly ITopicsProvider _topicsProvider;
     private readonly FetchAndLockOptions _options;
+    private readonly ITopicsProvider _topicsProvider;
 
     internal LegacyFetchAndLockRequestProvider(
         ITopicsProvider topicsProvider,

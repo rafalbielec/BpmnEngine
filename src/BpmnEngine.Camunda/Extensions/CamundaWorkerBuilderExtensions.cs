@@ -4,7 +4,7 @@ using BpmnEngine.Camunda.Attributes;
 using BpmnEngine.Camunda.Execution;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BpmnEngine.Camunda.Configuration;
+namespace BpmnEngine.Camunda.Extensions;
 
 public static class CamundaWorkerBuilderExtensions
 {
@@ -27,21 +27,19 @@ public static class CamundaWorkerBuilderExtensions
         var topicsAttribute = handlerType.GetCustomAttribute<HandlerTopicsAttribute>();
 
         if (topicsAttribute == null)
-        {
             throw new Exception($"\"{handlerType.FullName}\" doesn't provide any \"HandlerTopicsAttribute\"");
-        }
 
         var variablesAttribute = handlerType.GetCustomAttribute<HandlerVariablesAttribute>();
 
         return new HandlerMetadata(topicsAttribute.TopicNames, topicsAttribute.LockDuration)
         {
             LocalVariables = variablesAttribute?.LocalVariables ?? false,
-            Variables =  variablesAttribute?.AllVariables ?? false ? null : variablesAttribute?.Variables,
+            Variables = variablesAttribute?.AllVariables ?? false ? null : variablesAttribute?.Variables,
             IncludeExtensionProperties = topicsAttribute.IncludeExtensionProperties
         };
     }
 
-    public static ICamundaWorkerBuilder AddHandler<T>(this ICamundaWorkerBuilder builder, HandlerMetadata metadata)
+    private static ICamundaWorkerBuilder AddHandler<T>(this ICamundaWorkerBuilder builder, HandlerMetadata metadata)
         where T : class, IExternalTaskHandler
     {
         Guard.NotNull(builder, nameof(builder));

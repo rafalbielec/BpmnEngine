@@ -1,13 +1,23 @@
 using BpmnEngine.Camunda.Abstractions;
+using BpmnEngine.Camunda.Client;
 using BpmnEngine.Camunda.Execution;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
-namespace BpmnEngine.Camunda.Configuration;
+namespace BpmnEngine.Camunda.Extensions;
 
 public static class CamundaWorkerServiceCollectionExtensions
 {
+    public static IHttpClientBuilder AddTaskClient(this IServiceCollection services, Action<HttpClient> configureClient) =>
+        services.AddHttpClient<IExternalTaskClient, ExternalTaskClient>(configureClient);
+
+    public static IHttpClientBuilder AddProcessClient(this IServiceCollection services, Action<HttpClient> configureClient) =>
+        services.AddHttpClient<IProcessClient, ProcessClient>(configureClient);
+
+    public static IHttpClientBuilder AddMessageClient(this IServiceCollection services, Action<HttpClient> configureClient) =>
+        services.AddHttpClient<IMessageClient, MessageClient>(configureClient);
+
     public static ICamundaWorkerBuilder AddCamundaWorker(
         this IServiceCollection services,
         string workerId,
@@ -28,7 +38,6 @@ public static class CamundaWorkerServiceCollectionExtensions
             .AddFetchAndLockRequestProvider((_, provider) => new LegacyFetchAndLockRequestProvider(
                 provider.GetRequiredService<ITopicsProvider>(),
                 provider.GetRequiredService<IOptions<FetchAndLockOptions>>()
-            ))
-            .ConfigurePipeline(_ => { });
+            )).ConfigurePipeline(_ => {});
     }
 }

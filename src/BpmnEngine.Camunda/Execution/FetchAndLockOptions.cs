@@ -2,9 +2,9 @@ namespace BpmnEngine.Camunda.Execution;
 
 public class FetchAndLockOptions
 {
-    private string _workerId = string.Empty;
-    private int _maxTasks = 1;
     private int _asyncResponseTimeout = 10_000;
+    private int _maxTasks = 1;
+    private string _workerId = string.Empty;
 
     public string WorkerId
     {

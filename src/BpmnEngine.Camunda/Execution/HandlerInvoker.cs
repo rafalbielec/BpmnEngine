@@ -1,16 +1,16 @@
 using System.Diagnostics.CodeAnalysis;
 using BpmnEngine.Camunda.Abstractions;
 using BpmnEngine.Camunda.Results;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
 namespace BpmnEngine.Camunda.Execution;
 
 public class HandlerInvoker
 {
-    private readonly IExternalTaskHandler _handler;
     private readonly IExternalTaskContext _context;
+    private readonly IExternalTaskHandler _handler;
     private readonly ILogger<HandlerInvoker> _logger;
 
     public HandlerInvoker(IExternalTaskHandler handler, IExternalTaskContext context)
@@ -57,18 +57,12 @@ public class HandlerInvoker
 
         public static void LogStartedProcessing(ILogger logger, string taskId)
         {
-            if (logger.IsEnabled(LogLevel.Debug))
-            {
-                StartedProcessing(logger, taskId, null);
-            }
+            if (logger.IsEnabled(LogLevel.Debug)) StartedProcessing(logger, taskId, null);
         }
 
         public static void LogFinishedProcessing(ILogger logger, string taskId)
         {
-            if (logger.IsEnabled(LogLevel.Debug))
-            {
-                FinishedProcessing(logger, taskId, null);
-            }
+            if (logger.IsEnabled(LogLevel.Debug)) FinishedProcessing(logger, taskId, null);
         }
     }
 }

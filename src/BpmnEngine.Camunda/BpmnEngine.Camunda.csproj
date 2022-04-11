@@ -16,9 +16,4 @@
 
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Client\Responses\" />
-    <Folder Include="Models\" />
-  </ItemGroup>
-
 </Project>

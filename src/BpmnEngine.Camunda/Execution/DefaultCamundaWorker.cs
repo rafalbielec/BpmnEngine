@@ -12,10 +12,10 @@ public sealed class DefaultCamundaWorker : ICamundaWorker
 {
     private readonly IExternalTaskClient _externalTaskClient;
     private readonly IFetchAndLockRequestProvider _fetchAndLockRequestProvider;
-    private readonly WorkerEvents _workerEvents;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly WorkerHandlerDescriptor _workerHandlerDescriptor;
     private readonly ILogger<DefaultCamundaWorker> _logger;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly WorkerEvents _workerEvents;
+    private readonly WorkerHandlerDescriptor _workerHandlerDescriptor;
 
     public DefaultCamundaWorker(
         IExternalTaskClient externalTaskClient,
@@ -47,12 +47,10 @@ public sealed class DefaultCamundaWorker : ICamundaWorker
                 var tasks = new Task[externalTasks.Count];
                 var i = 0;
                 foreach (var externalTask in externalTasks)
-                {
                     tasks[i++] = Task.Run(
                         () => ProcessExternalTaskAsync(externalTask, cancellationToken),
                         cancellationToken
                     );
-                }
 
                 await Task.WhenAll(tasks);
             }
@@ -132,34 +130,22 @@ public sealed class DefaultCamundaWorker : ICamundaWorker
 
         public static void LogWaiting(ILogger logger)
         {
-            if (logger.IsEnabled(LogLevel.Debug))
-            {
-                Waiting(logger, null);
-            }
+            if (logger.IsEnabled(LogLevel.Debug)) Waiting(logger, null);
         }
 
         public static void LogLocked(ILogger logger, int count)
         {
-            if (logger.IsEnabled(LogLevel.Debug))
-            {
-                Locked(logger, count, null);
-            }
+            if (logger.IsEnabled(LogLevel.Debug)) Locked(logger, count, null);
         }
 
         public static void LogFailedLocking(ILogger logger, Exception e)
         {
-            if (logger.IsEnabled(LogLevel.Warning))
-            {
-                FailedLocking(logger, e.Message, e);
-            }
+            if (logger.IsEnabled(LogLevel.Warning)) FailedLocking(logger, e.Message, e);
         }
 
         public static void LogFailedExecution(ILogger logger, string externalTaskId, Exception e)
         {
-            if (logger.IsEnabled(LogLevel.Warning))
-            {
-                FailedExecution(logger, externalTaskId, e);
-            }
+            if (logger.IsEnabled(LogLevel.Warning)) FailedExecution(logger, externalTaskId, e);
         }
     }
 }

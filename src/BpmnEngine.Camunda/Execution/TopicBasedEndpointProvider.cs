@@ -26,10 +26,8 @@ public class TopicBasedEndpointProvider : IEndpointProvider
 
     protected virtual ExternalTaskDelegate GetHandlerDelegateByTopicName(string topicName)
     {
-        if (_handlerDelegates.TryGetValue(topicName, out var handlerDelegate))
-        {
+        if (_handlerDelegates.TryGetValue(topicName, out var handlerDelegate)) 
             return handlerDelegate;
-        }
 
         throw new ArgumentException("Unknown topic name", nameof(topicName));
     }
