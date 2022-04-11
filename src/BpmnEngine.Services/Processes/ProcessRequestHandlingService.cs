@@ -9,11 +9,15 @@ namespace BpmnEngine.Services.Processes;
 public class ProcessRequestHandlingService : IProcessRequestHandlingService
 {
     private readonly IProcessClient _client;
+    private readonly IBusinessKeyGenerator _businessKeyGenerator;
     private readonly ILogger<ProcessRequestHandlingService> _logger;
 
-    public ProcessRequestHandlingService(IProcessClient client, ILogger<ProcessRequestHandlingService> logger)
+    public ProcessRequestHandlingService(IProcessClient client, 
+        IBusinessKeyGenerator businessKeyGenerator,
+        ILogger<ProcessRequestHandlingService> logger)
     {
         _client = client;
+        _businessKeyGenerator = businessKeyGenerator;
         _logger = logger;
     }
 
@@ -31,7 +35,7 @@ public class ProcessRequestHandlingService : IProcessRequestHandlingService
                 break;
         }
 
-        var businessKey = $"{request.Process}:{Guid.NewGuid():N}";
+        var businessKey = _businessKeyGenerator.GenerateBusinessKey(request);
 
         var result = await _client.StartProcessAsync(processKey, businessKey, request.ProcessVariables);
 

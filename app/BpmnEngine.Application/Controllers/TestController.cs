@@ -43,7 +43,7 @@ public class TestController : ControllerBase
         };
 
         var result = await _client.StartProcessAsync(
-            "TestProcess",
+            ServicesConstants.ProcessNames.Test,
             Guid.NewGuid().ToString("N"), 
             variables);
 

@@ -12,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<HtmlHelperOptions>(o => o.ClientValidationEnabled = true);
 builder.Services.AddTransient<IViewModelProcessor, ViewModelProcessor>();
+builder.Services.AddTransient<IBusinessKeyGenerator, BusinessKeyGenerator>();
 builder.Services.AddTransient<IProcessRequestHandlingService, ProcessRequestHandlingService>();
 
 var configuration = builder.Configuration;
@@ -36,7 +37,7 @@ builder.Services.AddCamundaWorker(CamundaConstants.WorkerName)
             var logger = context.ServiceProvider.GetRequiredService<ILogger<Program>>();
             logger.LogInformation("Task {Id} has started", context.Task.Id);
             await next(context);
-            logger.LogInformation("Task {Id} has been processed", context.Task.Id);
+            logger.LogInformation("Task {Id} has ended", context.Task.Id);
         });
     });
 

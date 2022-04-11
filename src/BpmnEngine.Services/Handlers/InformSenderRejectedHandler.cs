@@ -9,28 +9,28 @@ namespace BpmnEngine.Services.Handlers;
 
 [HandlerTopics("inform-sender-rejected", LockDuration = ServicesConstants.DefaultLockDuration)]
 [HandlerVariables(AllVariables = true)]
-public class InformSenderRejectedHandler : IExternalTaskHandler
+public class InformSenderRejectedHandler : BaseHandler<InformSenderRejectedHandler>, IExternalTaskHandler
 {
-    private readonly ILogger<InformSenderRejectedHandler> _logger;
-
-    public InformSenderRejectedHandler(ILogger<InformSenderRejectedHandler> logger)
+    public InformSenderRejectedHandler(ILogger<InformSenderRejectedHandler> logger) : base(logger)
     {
-        _logger = logger;
     }
 
     public async Task<IExecutionResult> HandleAsync(ExternalTask externalTask, CancellationToken cancellationToken)
     {
         var context = new ExternalTaskContext(externalTask);
 
-        _logger.LogInformation(context.ToString());
+        Logger.LogInformation($"{context} has started");
 
         await Task.Delay(5000, cancellationToken);
 
-        _logger.LogInformation($"Wniosek {context.BusinessKey} odrzucony");
+        Logger.LogInformation($"External Service Task for '{context.TopicName}' in {context.BusinessKey} has ended");
 
+        Logger.LogInformation($"Wniosek {context.BusinessKey} został odrzucony");
+
+        context.UpdateLastStep();
         return new CompleteResult
         {
-            Variables = externalTask.Variables
+            Variables = context.Variables
         };
     }
 }

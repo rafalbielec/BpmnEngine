@@ -1,5 +1,4 @@
 ﻿using BpmnEngine.Camunda.Abstractions;
-using BpmnEngine.Camunda.Attributes;
 using BpmnEngine.Camunda.External;
 using BpmnEngine.Camunda.Results;
 using BpmnEngine.Services.Models;
@@ -7,15 +6,16 @@ using Microsoft.Extensions.Logging;
 
 namespace BpmnEngine.Services.Handlers;
 
-[HandlerTopics("inform-sender-accepted", LockDuration = ServicesConstants.DefaultLockDuration)]
-[HandlerVariables(AllVariables = true)]
-public class InformSenderAcceptedHandler : BaseHandler<InformSenderAcceptedHandler>, IExternalTaskHandler
+public abstract class BaseHandler<T>
 {
-    public InformSenderAcceptedHandler(ILogger<InformSenderAcceptedHandler> logger) : base(logger)
+    protected readonly ILogger<T> Logger;
+
+    protected BaseHandler(ILogger<T> logger)
     {
+        Logger = logger;
     }
 
-    public async Task<IExecutionResult> HandleAsync(ExternalTask externalTask, CancellationToken cancellationToken)
+    protected async Task<IExecutionResult> BaseHandleAsync(ExternalTask externalTask, CancellationToken cancellationToken)
     {
         var context = new ExternalTaskContext(externalTask);
 
@@ -24,8 +24,6 @@ public class InformSenderAcceptedHandler : BaseHandler<InformSenderAcceptedHandl
         await Task.Delay(5000, cancellationToken);
 
         Logger.LogInformation($"External Service Task for '{context.TopicName}' in {context.BusinessKey} has ended");
-
-        Logger.LogInformation($"Wniosek {context.BusinessKey} został zaakceptowany");
 
         context.UpdateLastStep();
         return new CompleteResult
