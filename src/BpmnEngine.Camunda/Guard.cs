@@ -2,10 +2,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace BpmnEngine.Camunda;
 
-internal static class Guard
+public static class Guard
 {
     [ExcludeFromCodeCoverage]
-    internal static T NotNull<T>(T parameterValue, string parameterName) where T : class
+    public static T NotNull<T>(T parameterValue, string parameterName) where T : class
     {
         if (parameterValue == null)
         {
@@ -16,7 +16,7 @@ internal static class Guard
     }
 
     [ExcludeFromCodeCoverage]
-    internal static int GreaterThanOrEqual(int value, int minValue, string parameterName)
+    public static int GreaterThanOrEqual(int value, int minValue, string parameterName)
     {
         if (value < minValue)
         {
@@ -27,7 +27,7 @@ internal static class Guard
     }
 
     [ExcludeFromCodeCoverage]
-    internal static string NotEmptyAndNotNull(string value, string parameterName)
+    public static string NotEmptyAndNotNull(string? value, string parameterName)
     {
         if (string.IsNullOrEmpty(value))
         {

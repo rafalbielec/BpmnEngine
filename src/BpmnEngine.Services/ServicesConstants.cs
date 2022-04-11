@@ -2,6 +2,8 @@
 
 public static class ServicesConstants
 {
+    public const int DefaultLockDuration = 10_000;
+
     public static class Messages
     {
         public const string ManagerApproved = "MGRAPPROVED";
@@ -13,12 +15,32 @@ public static class ServicesConstants
         public const string BouDirectorRejected = "BOUDIRREJECTEDVERIFIED";
     }
 
-    public static class Positions
+    public static class FormHandlingVariables
     {
-        public const string Supervisor = nameof(Supervisor);
-        public const string Manager = nameof(Manager);
-        public const string Director = nameof(Director);
-        public const string BouDirector = nameof(BouDirector);
-        public const string Position = nameof(Position);
+        public const string Start = "start";
+        public const string LastStep = "last_step";
+        public const string Supervisor = "supervisor";
+        public const string Manager = "manager";
+        public const string None = "none";
+        public const string Employee = "employee";
+        public const string Director = "director";
+        public const string BouVerification = "bou_verification";
+        public const string BouDirector = "bou_director";
+        public const string Position = "position";
+
+        public const string PhoneNumber = "phone_number";
+        public const string Destination = "destination";
+    }
+
+    public static class ProcessNames
+    {
+        public const string Forms = "FormHandlingExtended";
+        public const string Test = "TestProcess";
+    }
+
+    public enum Processes
+    {
+        Test,
+        CarHire
     }
 }

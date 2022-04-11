@@ -20,15 +20,12 @@ public class ProcessClient : BaseClient, IProcessClient
         return result;
     }
 
-    public async Task<ProcessStartResponse> StartProcessAsync(string key, string businessKey, CancellationToken cancellationToken = default)
+    public async Task<ProcessStartResponse> StartProcessAsync(string processKey, string businessKey,
+        Dictionary<string, Variable> variables,
+        CancellationToken cancellationToken = default)
     {
-        var variables = new Dictionary<string, Variable>
-        {
-            ["supervisor"] = Variable.String("director")
-        };
-
         var request = new ProcessStartRequest(businessKey, variables);
-        using var response = await SendPostProcessDefinitionAsync($"key/{key}/start", request, cancellationToken);
+        using var response = await SendPostProcessDefinitionAsync($"key/{processKey}/start", request, cancellationToken);
         await EnsureSuccessAsync(response);
 
         var result = await response.ReadJsonAsync<ProcessStartResponse>();

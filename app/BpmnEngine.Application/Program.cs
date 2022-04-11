@@ -1,11 +1,18 @@
+using BpmnEngine.Application.FrontEnd;
 using BpmnEngine.Camunda;
 using BpmnEngine.Camunda.Client;
 using BpmnEngine.Camunda.Configuration;
+using BpmnEngine.Services.Abstractions;
 using BpmnEngine.Services.Handlers;
+using BpmnEngine.Services.Processes;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+builder.Services.Configure<HtmlHelperOptions>(o => o.ClientValidationEnabled = true);
+builder.Services.AddTransient<IViewModelProcessor, ViewModelProcessor>();
+builder.Services.AddTransient<IProcessRequestHandlingService, ProcessRequestHandlingService>();
 
 var configuration = builder.Configuration;
 
@@ -16,7 +23,12 @@ builder.Services.AddProcessClient(client => client.BaseAddress = new Uri(engineR
 builder.Services.AddMessageClient(client => client.BaseAddress = new Uri(engineRestUri));
 
 builder.Services.AddCamundaWorker(CamundaConstants.WorkerName)
-    .AddHandler<RequestApprovalHandler>()
+    .AddHandler<ManagerChecksHandler>()
+    .AddHandler<BouDirectorChecksHandler>()
+    .AddHandler<BouVerificationHandler>()
+    .AddHandler<DirectorChecksHandler>()
+    .AddHandler<InformSenderAcceptedHandler>()
+    .AddHandler<InformSenderRejectedHandler>()
     .ConfigurePipeline(pipeline =>
     {
         pipeline.Use(next => async context =>

@@ -1,4 +1,5 @@
 ﻿using BpmnEngine.Camunda.Abstractions;
+using BpmnEngine.Camunda.External;
 using BpmnEngine.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,8 +37,15 @@ public class TestController : ControllerBase
     [Route("start")]
     public async Task<IActionResult> StartAsync()
     {
-        var result = await _client.StartProcessAsync("TestProcess",
-            Guid.NewGuid().ToString("N"));
+        var variables = new Dictionary<string, Variable>
+        {
+            [ServicesConstants.FormHandlingVariables.LastStep] = Variable.String(ServicesConstants.FormHandlingVariables.Start)
+        };
+
+        var result = await _client.StartProcessAsync(
+            "TestProcess",
+            Guid.NewGuid().ToString("N"), 
+            variables);
 
         return Ok(result);
     }

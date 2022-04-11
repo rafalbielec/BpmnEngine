@@ -1,18 +1,24 @@
 using BpmnEngine.Camunda.Abstractions;
 using BpmnEngine.Camunda.Client.Requests;
 using BpmnEngine.Camunda.Client.Responses;
+using Microsoft.Extensions.Logging;
 
 namespace BpmnEngine.Camunda.Client;
 
 public class MessageClient : BaseClient, IMessageClient
 {
-    public MessageClient(HttpClient httpClient) : base(httpClient)
+    private readonly ILogger<MessageClient> _logger;
+
+    public MessageClient(HttpClient httpClient, ILogger<MessageClient> logger) : base(httpClient)
     {
+        _logger = logger;
     }
 
     public async Task<MessageResponse[]> SendMessageEventAsync(string businessKey, string message,
         CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation($"Sending message {message} to {businessKey}");
+
         var request = new MessageRequest(businessKey, message);
 
         using var response = await SendMessageAsync(request, cancellationToken);
