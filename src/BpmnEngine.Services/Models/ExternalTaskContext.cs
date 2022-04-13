@@ -8,11 +8,15 @@ public class ExternalTaskContext
 {
     public ExternalTaskContext(ExternalTask externalTask)
     {
-        TaskId = Guard.NotEmptyAndNotNull(externalTask.Id, nameof(externalTask.Id));
-        ProcessInstanceId = Guard.NotEmptyAndNotNull(externalTask.ProcessInstanceId, nameof(externalTask.ProcessInstanceId));
+        TaskId = Guid.NewGuid();
+
+        var processInstanceId = Guard.NotEmptyAndNotNull(externalTask.ProcessInstanceId, nameof(externalTask.ProcessInstanceId));
+
         BusinessKey = Guard.NotEmptyAndNotNull(externalTask.BusinessKey, nameof(externalTask.BusinessKey));
         TopicName = Guard.NotEmptyAndNotNull(externalTask.TopicName, nameof(externalTask.TopicName));
         Variables = externalTask.Variables ?? new Dictionary<string, Variable>();
+
+        ProcessInstanceId = new Guid(processInstanceId);
 
         if (externalTask.Variables == null)
             throw new MissingVariablesException();
@@ -36,8 +40,8 @@ public class ExternalTaskContext
     public IDictionary<string, Variable> Variables { get; set; }
 
     public string TopicName { get; set; }
-    public string TaskId { get; }
-    public string ProcessInstanceId { get; }
+    public Guid TaskId { get; }
+    public Guid ProcessInstanceId { get; }
     public string BusinessKey { get; }
     public string LastStep { get; }
 
@@ -54,5 +58,5 @@ public class ExternalTaskContext
             Variables.Add(ServicesConstants.FormHandlingVariables.LastStep, Variable.String(value));
     }
 
-    public override string ToString() => $"External Service Task for '{TopicName}' in {BusinessKey}";
+    public override string ToString() => $"External Service Task {TaskId:N} for '{TopicName}' in {BusinessKey} / {ProcessInstanceId:N}";
 }

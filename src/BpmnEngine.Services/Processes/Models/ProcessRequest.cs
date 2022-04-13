@@ -8,3 +8,4 @@ public record ProcessRequest(
     Dictionary<string, Variable> ProcessVariables);
 
 public record ExecutedProcess(Guid ProcessInstanceId, string BusinessKey, Dictionary<string, string> FormValues);
+public record UserAction(Guid Id, Guid ProcessInstanceId, string TopicName);

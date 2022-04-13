@@ -40,7 +40,7 @@ public class ViewModelProvider : IViewModelProvider
 
     public async Task<FormsViewModel> GetFormsAsync()
     {
-        var forms = await _repository.SelectAllFormsAsync();
+        var forms = await _repository.SelectFormsAsync();
 
         var model = new FormsViewModel();
 

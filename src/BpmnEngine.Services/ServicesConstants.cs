@@ -15,6 +15,16 @@ public sealed class ServicesConstants
         public const string BouDirectorRejected = "BOUDIRREJECTEDVERIFIED";
     }
 
+    public static class Topics
+    {
+        public const string ManagerChecks = "manager-checks";
+        public const string BouDirectorChecks = "bou-director-checks";
+        public const string Verification = "bou-verification";
+        public const string DirectorChecks = "director-checks";
+        public const string Accepted = "inform-sender-accepted";
+        public const string Rejected = "inform-sender-rejected";
+    }
+
     public static class FormHandlingVariables
     {
         public const string Start = "start";

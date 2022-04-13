@@ -17,10 +17,15 @@ public class ProcessController : Controller
     [HttpGet("decision/{id:guid}")]
     public async Task<IActionResult> Decision(Guid id)
     {
-        var (processId, businessKey, formValues) = await _decisionService.GetExecutedProcessByIdAsync(id);
+        var userAction = await _decisionService.GetUserActionByIdAsync(id);
+
+        var (processId, businessKey, formValues) = 
+            await _decisionService.GetExecutedProcessByIdAsync(userAction.ProcessInstanceId);
 
         var model = new DecisionViewModel
         {
+            Id = userAction.Id,
+            TopicName = userAction.TopicName,
             ProcessInstanceId = processId,
             BusinessKey = businessKey,
             Variables = formValues
@@ -29,15 +34,15 @@ public class ProcessController : Controller
         return View(model);
     }
 
-    [HttpPost("decline")]
-    public async Task<IActionResult> Decline(DecisionViewModel model)
+    [HttpPost("reject")]
+    public async Task<IActionResult> Reject(DecisionViewModel model)
     {
         if (!ModelState.IsValid)
         {
-            return View("Decision", model);
+            return RedirectToAction(nameof(Decision), new {id = model.Id});
         }
 
-        await _decisionService.DeclineMessageAsync(model.BusinessKey);
+        await _decisionService.RejectMessageAsync(model.BusinessKey, model.TopicName);
 
         return View("DecisionMade", model);
     }
@@ -47,10 +52,10 @@ public class ProcessController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return View("Decision", model);
+            return RedirectToAction(nameof(Decision), new { id = model.Id });
         }
 
-        await _decisionService.AcceptMessageAsync(model.BusinessKey);
+        await _decisionService.AcceptMessageAsync(model.BusinessKey, model.TopicName);
 
         return View("DecisionMade", model);
     }

@@ -25,9 +25,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wiki", "wiki", "{EA2717DE-D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "migrations", "migrations", "{9CD35C66-958A-4ECC-8C1D-07C018F48530}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BpmnEngine.Migrations", "migrations\BpmnEngine.Migrations\BpmnEngine.Migrations.csproj", "{BA7520F2-87BB-4C33-A2FF-7CB4A947F1B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BpmnEngine.Migrations", "migrations\BpmnEngine.Migrations\BpmnEngine.Migrations.csproj", "{BA7520F2-87BB-4C33-A2FF-7CB4A947F1B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BpmnEngine.Storage", "src\BpmnEngine.Storage\BpmnEngine.Storage.csproj", "{BE97AF1A-9F19-4CFD-B5F9-0C2EA23C769A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BpmnEngine.Storage", "src\BpmnEngine.Storage\BpmnEngine.Storage.csproj", "{BE97AF1A-9F19-4CFD-B5F9-0C2EA23C769A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bpmn", "bpmn", "{14B29989-24CE-4562-982B-41A64134C552}"
 	ProjectSection(SolutionItems) = preProject

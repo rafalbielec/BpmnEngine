@@ -1,15 +1,17 @@
 ﻿using BpmnEngine.Camunda.Abstractions;
 using BpmnEngine.Camunda.Attributes;
 using BpmnEngine.Camunda.External;
+using BpmnEngine.Services.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace BpmnEngine.Services.Handlers;
 
-[HandlerTopics("manager-checks", LockDuration = ServicesConstants.DefaultLockDuration)]
+[HandlerTopics(ServicesConstants.Topics.ManagerChecks, LockDuration = ServicesConstants.DefaultLockDuration)]
 [HandlerVariables(AllVariables = true)]
 public class ManagerChecksHandler : BaseHandler<ManagerChecksHandler>, IExternalTaskHandler
 {
-    public ManagerChecksHandler(ILogger<ManagerChecksHandler> logger) : base(logger)
+    public ManagerChecksHandler(INotificationService service, ILogger<ManagerChecksHandler> logger) 
+        : base(service, logger)
     {
     }
 

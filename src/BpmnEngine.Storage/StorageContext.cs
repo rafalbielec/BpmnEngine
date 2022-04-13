@@ -14,6 +14,7 @@ public class StorageContext : DbContext
 
     public DbSet<RequestFormEntity> RequestForms { get; set; }
     public DbSet<ExecutedProcessEntity> ExecutedProcess { get; set; }
+    public DbSet<UserActionEntity> UserActions { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

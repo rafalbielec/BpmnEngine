@@ -1,15 +1,17 @@
 ﻿using BpmnEngine.Camunda.Abstractions;
 using BpmnEngine.Camunda.Attributes;
 using BpmnEngine.Camunda.External;
+using BpmnEngine.Services.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace BpmnEngine.Services.Handlers;
 
-[HandlerTopics("bou-director-checks", LockDuration = ServicesConstants.DefaultLockDuration)]
+[HandlerTopics(ServicesConstants.Topics.BouDirectorChecks, LockDuration = ServicesConstants.DefaultLockDuration)]
 [HandlerVariables(AllVariables = true)]
 public class BouDirectorChecksHandler : BaseHandler<BouDirectorChecksHandler>, IExternalTaskHandler
 {
-    public BouDirectorChecksHandler(ILogger<BouDirectorChecksHandler> logger) : base(logger)
+    public BouDirectorChecksHandler(INotificationService service, ILogger<BouDirectorChecksHandler> logger)
+        : base(service, logger)
     {
     }
 

@@ -10,6 +10,10 @@ public class Variable : IEquatable<Variable>
     public object? Value { get; }
     public VariableType Type { get; }
 
+    public string AsStringValue()
+    {
+        return Value?.ToString() ?? string.Empty;
+    }
 
     [ExcludeFromCodeCoverage]
     public static Variable Boolean(bool value) => new(value, VariableType.Boolean);

@@ -37,7 +37,10 @@ public class Program
         // Instantiate the runner
         var runner = serviceProvider.GetRequiredService<IMigrationRunner>();
 
-        // Execute the migrations
+        // Remove all tables, reset to 0
+        //runner.MigrateDown(0);
+
+        // Run migrations up to the last one
         runner.MigrateUp();
     }
 }

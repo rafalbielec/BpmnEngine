@@ -13,7 +13,7 @@ public class FormsRepository : IFormsRepository
         _connectionString = connectionString;
     }
 
-    public async Task<IEnumerable<RequestFormEntity>> SelectAllFormsAsync()
+    public async Task<IEnumerable<RequestFormEntity>> SelectFormsAsync()
     {
         await using var context = new StorageContext(_connectionString);
 
@@ -32,6 +32,13 @@ public class FormsRepository : IFormsRepository
         await using var context = new StorageContext(_connectionString);
 
         return await context.ExecutedProcess.AsNoTracking().FirstAsync(a => a.Id == id);
+    }
+
+    public async Task<bool> ExecutedProcessById(Guid id)
+    {
+        await using var context = new StorageContext(_connectionString);
+
+        return await context.ExecutedProcess.AsNoTracking().AnyAsync(a => a.Id == id);
     }
 
     public async Task<int> InsertExecutedProcessAsync(Guid id, 
