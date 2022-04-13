@@ -1,6 +1,6 @@
 namespace BpmnEngine.Camunda;
 
-public static class CamundaConstants
+public sealed class CamundaConstants
 {
     internal const int MinimumLockDuration = 5_000;
     internal const int MinimumParallelExecutors = 1;

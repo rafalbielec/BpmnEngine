@@ -3,7 +3,7 @@
 [Serializable]
 public class MissingVariablesException : Exception
 {
-    public MissingVariablesException() : base("No ProcessVariables found")
+    public MissingVariablesException() : base("No process variables found")
     {
     }
 }

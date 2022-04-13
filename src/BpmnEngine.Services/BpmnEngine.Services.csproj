@@ -8,11 +8,13 @@
 
   <ItemGroup>
     <Folder Include="Communication\" />
+    <Folder Include="Extensions\" />
     <Folder Include="Processes\Errors\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BpmnEngine.Camunda\BpmnEngine.Camunda.csproj" />
+    <ProjectReference Include="..\BpmnEngine.Storage\BpmnEngine.Storage.csproj" />
   </ItemGroup>
 
 </Project>

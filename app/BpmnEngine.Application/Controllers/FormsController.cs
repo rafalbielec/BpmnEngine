@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
-using BpmnEngine.Application.FrontEnd;
 using BpmnEngine.Application.Models;
+using BpmnEngine.Application.Processors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BpmnEngine.Application.Controllers;
@@ -8,10 +8,12 @@ namespace BpmnEngine.Application.Controllers;
 [Route("forms")]
 public class FormsController : Controller
 {
+    private readonly IViewModelProvider _provider;
     private readonly IViewModelProcessor _processor;
 
-    public FormsController(IViewModelProcessor processor)
+    public FormsController(IViewModelProvider provider, IViewModelProcessor processor)
     {
+        _provider = provider;
         _processor = processor;
     }
 
@@ -20,11 +22,11 @@ public class FormsController : Controller
     {
         return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
     }
-    
-    [HttpGet("car")]
-    public IActionResult CarHire()
+
+    [HttpGet("")]
+    public async Task<IActionResult> Index()
     {
-        var model = new CarHireViewModel();
+        var model = await _provider.GetFormsAsync();
 
         return View(model);
     }
@@ -36,7 +38,7 @@ public class FormsController : Controller
 
         return View(model);
     }
-    
+
     [HttpPost("messages")]
     public async Task<IActionResult> Messages(MessagesViewModel model)
     {
@@ -45,12 +47,20 @@ public class FormsController : Controller
             return View(model);
         }
 
-        var viewModel = await _processor.ProcessViewModelAsync(model);
+        var viewModel = await _processor.ProcessMessagesViewModelAsync(model);
 
         return View("MessageInfo", viewModel);
     }
-    
-    [HttpPost("car")]
+
+    [HttpGet("car_hire")]
+    public async Task<IActionResult> CarHire()
+    {
+        var model = await _provider.GetCarHireAsync();
+
+        return View(model);
+    }
+
+    [HttpPost("car_hire")]
     public async Task<IActionResult> CarHire(CarHireViewModel model)
     {
         if (!ModelState.IsValid)
@@ -60,6 +70,27 @@ public class FormsController : Controller
 
         var viewModel = await _processor.ProcessViewModelAsync(model);
         
+        return View("ProcessInfo", viewModel);
+    }
+
+    [HttpGet("room_booking")]
+    public async Task<IActionResult> RoomBooking()
+    {
+        var model = await _provider.GetRoomBookingAsync();
+
+        return View(model);
+    }
+    
+    [HttpPost("room_booking")]
+    public async Task<IActionResult> RoomBooking(RoomBookingViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var viewModel = await _processor.ProcessViewModelAsync(model);
+
         return View("ProcessInfo", viewModel);
     }
 }

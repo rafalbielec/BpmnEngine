@@ -1,22 +1,30 @@
-using BpmnEngine.Application.FrontEnd;
+using BpmnEngine.Application.Processors;
 using BpmnEngine.Camunda;
 using BpmnEngine.Camunda.Extensions;
 using BpmnEngine.Services.Abstractions;
 using BpmnEngine.Services.Handlers;
 using BpmnEngine.Services.Processes;
+using BpmnEngine.Storage;
+using BpmnEngine.Storage.Abstractions;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.Configure<HtmlHelperOptions>(o => o.ClientValidationEnabled = true);
+builder.Services.AddTransient<IViewModelProvider, ViewModelProvider>();
 builder.Services.AddTransient<IViewModelProcessor, ViewModelProcessor>();
 builder.Services.AddTransient<IBusinessKeyGenerator, BusinessKeyGenerator>();
+
+builder.Services.AddTransient<IDecisionService, DecisionService>();
 builder.Services.AddTransient<IProcessRequestHandlingService, ProcessRequestHandlingService>();
 
 var configuration = builder.Configuration;
 
 var engineRestUri = configuration.GetRequiredSection(CamundaConstants.EngineRestAddress).Value;
+
+builder.Services.AddTransient<IFormsRepository>(_ => new FormsRepository(
+    configuration.GetConnectionString(StorageConstants.ConnectionStringName)));
 
 builder.Services.AddTaskClient(client => client.BaseAddress = new Uri(engineRestUri));
 builder.Services.AddProcessClient(client => client.BaseAddress = new Uri(engineRestUri));

@@ -5,28 +5,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BpmnEngine.Application.Controllers;
 
-[Route("api/test")]
-public class TestController : ControllerBase
+[Route("api")]
+public class ApiController : ControllerBase
 {
     private readonly IProcessClient _client;
-    private readonly IMessageClient _messageClient;
-
-    public TestController(IProcessClient client, IMessageClient messageClient)
+    
+    public ApiController(IProcessClient client)
     {
         _client = client;
-        _messageClient = messageClient;
     }
 
-    [HttpGet("message/{businessKey}")]
-    public async Task<IActionResult> GetMessageAsync([FromRoute] string businessKey)
-    {
-        var result = await _messageClient.SendMessageEventAsync(businessKey,
-            ServicesConstants.Messages.VerificationDone);
-
-        return Ok(result);
-    }
-
-    [Route("count")]
+    [HttpGet("count")]
     public async Task<IActionResult> CountAsync()
     {
         var result = await _client.CountProcessDefinitionsAsync();
@@ -34,7 +23,7 @@ public class TestController : ControllerBase
         return Ok(result);
     }
 
-    [Route("start")]
+    [HttpGet("start")]
     public async Task<IActionResult> StartAsync()
     {
         var variables = new Dictionary<string, Variable>
@@ -42,9 +31,10 @@ public class TestController : ControllerBase
             [ServicesConstants.FormHandlingVariables.LastStep] = Variable.String(ServicesConstants.FormHandlingVariables.Start)
         };
 
+        var businessKey = Guid.NewGuid().ToString("N");
         var result = await _client.StartProcessAsync(
-            ServicesConstants.ProcessNames.Test,
-            Guid.NewGuid().ToString("N"), 
+            ServicesConstants.ProcessBpmnDiagrams.Test,
+            businessKey, 
             variables);
 
         return Ok(result);

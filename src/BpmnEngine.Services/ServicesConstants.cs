@@ -1,6 +1,6 @@
 ﻿namespace BpmnEngine.Services;
 
-public static class ServicesConstants
+public sealed class ServicesConstants
 {
     public const int DefaultLockDuration = 10_000;
 
@@ -30,17 +30,13 @@ public static class ServicesConstants
 
         public const string PhoneNumber = "phone_number";
         public const string Destination = "destination";
+        public const string NumberOfPeople = "no_of_people";
+        public const string Room = "room";
     }
 
-    public static class ProcessNames
+    public static class ProcessBpmnDiagrams
     {
-        public const string Forms = "FormHandlingExtended";
+        public const string FormHandling = "FormHandlingExtended";
         public const string Test = "TestProcess";
-    }
-
-    public enum Processes
-    {
-        Test,
-        CarHire
     }
 }

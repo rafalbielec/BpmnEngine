@@ -1,16 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using BpmnEngine.Application.Processors;
 
 namespace BpmnEngine.Application.Models;
 
-public class CarHireViewModel
+public class CarHireViewModel : BaseViewModel
 {
-    private const string RequiredLabel = "Pole wymagane";
-
-    [Required(AllowEmptyStrings = false, ErrorMessage = RequiredLabel)]
-    [Display(Name = "Telefon kontaktowy")]
+    [Required(AllowEmptyStrings = false, ErrorMessage = PolishConstants.RequiredLabel)]
+    [Display(Name = PolishConstants.PhoneNumberLabel)]
     public string? PhoneNumber { get; set; }
-    
-    [Required(AllowEmptyStrings = false, ErrorMessage = RequiredLabel)]
-    [Display(Name = "Przejazd do")]
+
+    [Required(AllowEmptyStrings = false, ErrorMessage = PolishConstants.RequiredLabel)]
+    [Display(Name = PolishConstants.DestinationLabel)]
     public string? Destination { get; set; }
 }
