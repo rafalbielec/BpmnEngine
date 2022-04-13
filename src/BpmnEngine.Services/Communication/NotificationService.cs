@@ -44,14 +44,14 @@ public class NotificationService : INotificationService
         return false;
     }
 
-    public bool InformSenderAcceptedAsync(string businessKey)
+    public bool InformSenderAccepted(string businessKey)
     {
         SendMail("Powiadomienie z Camunda. Wniosek został zaakceptowany", $"{businessKey} został zaakceptowany");
 
         return true;
     }
 
-    public bool InformSenderRejectedAsync(string businessKey)
+    public bool InformSenderRejected(string businessKey)
     {
         SendMail("Powiadomienie z Camunda. Wniosek został odrzucony", $"{businessKey} został odrzucony");
 

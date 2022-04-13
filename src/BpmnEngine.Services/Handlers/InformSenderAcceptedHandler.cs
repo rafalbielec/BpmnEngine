@@ -26,7 +26,9 @@ public class InformSenderAcceptedHandler : BaseHandler<InformSenderAcceptedHandl
 
         Logger.LogInformation($"{context} has started");
 
-        _service.InformSenderAcceptedAsync(context.BusinessKey);
+        _service.InformSenderAccepted(context.BusinessKey);
+
+        await Task.Delay(1, cancellationToken);
 
         Logger.LogInformation($"Wniosek {context.BusinessKey} został zaakceptowany");
 

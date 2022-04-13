@@ -26,8 +26,10 @@ public class InformSenderRejectedHandler : BaseHandler<InformSenderRejectedHandl
 
         Logger.LogInformation($"{context} has started");
 
-        _service.InformSenderRejectedAsync(context.BusinessKey);
-        
+        _service.InformSenderRejected(context.BusinessKey);
+
+        await Task.Delay(1, cancellationToken);
+
         Logger.LogInformation($"Wniosek {context.BusinessKey} został odrzucony");
 
         context.UpdateLastStep();
