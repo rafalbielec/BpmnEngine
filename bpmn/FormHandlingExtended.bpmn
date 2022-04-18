@@ -16,7 +16,7 @@
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="StartFlow" sourceRef="Start" targetRef="JobPositionAssessmentGateway" />
     <bpmn:sequenceFlow id="FlowEmployee" name="Pracownik wysłał formularz" sourceRef="JobPositionAssessmentGateway" targetRef="ManagerChecks">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${supervisor == 'manager'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${position == 'employee'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:serviceTask id="DirectorChecks" name="Prośba o akceptację przez dyrektora" camunda:type="external" camunda:topic="director-checks" camunda:taskPriority="2">
       <bpmn:incoming>FlowManager</bpmn:incoming>
@@ -24,7 +24,7 @@
       <bpmn:outgoing>Flow_1ui2o1f</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="FlowManager" name="Kierownik wysłał formularz" sourceRef="JobPositionAssessmentGateway" targetRef="DirectorChecks">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${supervisor == 'director'}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${position == 'manager'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:intermediateCatchEvent id="InitalFormApprovedByDirectorEvent" name="Dyrektor zatwierdził wniosek">
       <bpmn:incoming>Flow_0r15qn0</bpmn:incoming>
@@ -79,7 +79,7 @@
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_086rbde" sourceRef="InformAboutAcceptedForm" targetRef="ProcessEnded" />
     <bpmn:sequenceFlow id="DirectorAppliedForm" name="Dyrektor wysłał wniosek" sourceRef="JobPositionAssessmentGateway" targetRef="SmeChecks">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${supervisor == ''}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${position == 'director'}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:intermediateCatchEvent id="InitalFormRejectedByDirectorEvent" name="Dyrektor odrzucił wniosek">
       <bpmn:incoming>Flow_104hskd</bpmn:incoming>
@@ -146,6 +146,74 @@
   <bpmn:message id="Message_1j2jmdb" name="BOUDIRREJECTEDVERIFIED" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="FormHandlingExtended">
+      <bpmndi:BPMNEdge id="Flow_1omunwa_di" bpmnElement="Flow_1omunwa">
+        <di:waypoint x="1230" y="630" />
+        <di:waypoint x="1000" y="630" />
+        <di:waypoint x="1000" y="580" />
+        <di:waypoint x="770" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tvkuma_di" bpmnElement="Flow_0tvkuma">
+        <di:waypoint x="1520" y="355" />
+        <di:waypoint x="1520" y="630" />
+        <di:waypoint x="1268" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11ratrr_di" bpmnElement="Flow_11ratrr">
+        <di:waypoint x="1520" y="355" />
+        <di:waypoint x="1520" y="490" />
+        <di:waypoint x="1268" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ligqxt_di" bpmnElement="Flow_1ligqxt">
+        <di:waypoint x="1545" y="330" />
+        <di:waypoint x="1612" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1pd2b11_di" bpmnElement="Flow_1pd2b11">
+        <di:waypoint x="1232" y="490" />
+        <di:waypoint x="1001" y="490" />
+        <di:waypoint x="1001" y="540" />
+        <di:waypoint x="770" y="540" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gzc23a_di" bpmnElement="Flow_1gzc23a">
+        <di:waypoint x="1440" y="330" />
+        <di:waypoint x="1495" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ui2o1f_di" bpmnElement="Flow_1ui2o1f">
+        <di:waypoint x="620" y="330" />
+        <di:waypoint x="795" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_110w11t_di" bpmnElement="Flow_110w11t">
+        <di:waypoint x="795" y="190" />
+        <di:waypoint x="738" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15sa2my_di" bpmnElement="Flow_15sa2my">
+        <di:waypoint x="845" y="190" />
+        <di:waypoint x="902" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xck016_di" bpmnElement="Flow_0xck016">
+        <di:waypoint x="620" y="120" />
+        <di:waypoint x="820" y="120" />
+        <di:waypoint x="820" y="165" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0enct9g_di" bpmnElement="Flow_0enct9g">
+        <di:waypoint x="720" y="208" />
+        <di:waypoint x="720" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_104hskd_di" bpmnElement="Flow_104hskd">
+        <di:waypoint x="820" y="355" />
+        <di:waypoint x="820" y="402" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0r15qn0_di" bpmnElement="Flow_0r15qn0">
+        <di:waypoint x="845" y="330" />
+        <di:waypoint x="942" y="330" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1oq0zjv_di" bpmnElement="Flow_1oq0zjv">
+        <di:waypoint x="820" y="438" />
+        <di:waypoint x="820" y="560" />
+        <di:waypoint x="770" y="560" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0otjnz0_di" bpmnElement="Flow_0otjnz0">
+        <di:waypoint x="720" y="600" />
+        <di:waypoint x="720" y="642" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_05ea8xo_di" bpmnElement="DirectorAppliedForm">
         <di:waypoint x="340" y="335" />
         <di:waypoint x="340" y="730" />
@@ -202,76 +270,14 @@
         <di:waypoint x="178" y="310" />
         <di:waypoint x="315" y="310" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0otjnz0_di" bpmnElement="Flow_0otjnz0">
-        <di:waypoint x="720" y="600" />
-        <di:waypoint x="720" y="642" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1oq0zjv_di" bpmnElement="Flow_1oq0zjv">
-        <di:waypoint x="820" y="438" />
-        <di:waypoint x="820" y="560" />
-        <di:waypoint x="770" y="560" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0r15qn0_di" bpmnElement="Flow_0r15qn0">
-        <di:waypoint x="845" y="330" />
-        <di:waypoint x="942" y="330" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_104hskd_di" bpmnElement="Flow_104hskd">
-        <di:waypoint x="820" y="355" />
-        <di:waypoint x="820" y="402" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0enct9g_di" bpmnElement="Flow_0enct9g">
-        <di:waypoint x="720" y="208" />
-        <di:waypoint x="720" y="520" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0xck016_di" bpmnElement="Flow_0xck016">
-        <di:waypoint x="620" y="120" />
-        <di:waypoint x="820" y="120" />
-        <di:waypoint x="820" y="165" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_15sa2my_di" bpmnElement="Flow_15sa2my">
-        <di:waypoint x="845" y="190" />
-        <di:waypoint x="902" y="190" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_110w11t_di" bpmnElement="Flow_110w11t">
-        <di:waypoint x="795" y="190" />
-        <di:waypoint x="738" y="190" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1ui2o1f_di" bpmnElement="Flow_1ui2o1f">
-        <di:waypoint x="620" y="330" />
-        <di:waypoint x="795" y="330" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1gzc23a_di" bpmnElement="Flow_1gzc23a">
-        <di:waypoint x="1440" y="330" />
-        <di:waypoint x="1495" y="330" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1pd2b11_di" bpmnElement="Flow_1pd2b11">
-        <di:waypoint x="1232" y="490" />
-        <di:waypoint x="1001" y="490" />
-        <di:waypoint x="1001" y="540" />
-        <di:waypoint x="770" y="540" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1ligqxt_di" bpmnElement="Flow_1ligqxt">
-        <di:waypoint x="1545" y="330" />
-        <di:waypoint x="1612" y="330" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_11ratrr_di" bpmnElement="Flow_11ratrr">
-        <di:waypoint x="1520" y="355" />
-        <di:waypoint x="1520" y="490" />
-        <di:waypoint x="1268" y="490" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0tvkuma_di" bpmnElement="Flow_0tvkuma">
-        <di:waypoint x="1520" y="355" />
-        <di:waypoint x="1520" y="630" />
-        <di:waypoint x="1268" y="630" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1omunwa_di" bpmnElement="Flow_1omunwa">
-        <di:waypoint x="1230" y="630" />
-        <di:waypoint x="1000" y="630" />
-        <di:waypoint x="1000" y="580" />
-        <di:waypoint x="770" y="580" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Activity_09nwyy6_di" bpmnElement="DirectorChecks">
-        <dc:Bounds x="520" y="270" width="100" height="80" />
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="Start">
+        <dc:Bounds x="142" y="292" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="125" y="335" width="71" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0u65ips_di" bpmnElement="ManagerChecks">
+        <dc:Bounds x="520" y="80" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0sbq0in_di" bpmnElement="JobPositionAssessmentGateway" isMarkerVisible="true">
         <dc:Bounds x="315" y="285" width="50" height="50" />
@@ -279,70 +285,19 @@
           <dc:Bounds x="222" y="276" width="55" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="Start">
-        <dc:Bounds x="142" y="292" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_09nwyy6_di" bpmnElement="DirectorChecks">
+        <dc:Bounds x="520" y="270" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0aqhoj0_di" bpmnElement="InitalFormApprovedByDirectorEvent">
+        <dc:Bounds x="942" y="312" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="125" y="335" width="71" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0kwp0ct_di" bpmnElement="SmeChecks">
-        <dc:Bounds x="1060" y="290" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0wv8x98_di" bpmnElement="BOUDirectorChecksVerifiedForm">
-        <dc:Bounds x="1340" y="290" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_16algeb_di" bpmnElement="ProcessEnded">
-        <dc:Bounds x="1872" y="312" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1862" y="355" width="58" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_08rjt13_di" bpmnElement="VerificationCompleteEvent">
-        <dc:Bounds x="1232" y="312" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1222" y="355" width="58" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_05wcvv9_di" bpmnElement="DirectrorGateway">
-        <dc:Bounds x="795" y="305" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="805" y="443" width="89" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0uopjvx_di" bpmnElement="BouGateway">
-        <dc:Bounds x="1495" y="305" width="50" height="50" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1nyms3x_di" bpmnElement="InitalFormRejectedByManagerEvent">
-        <dc:Bounds x="702" y="172" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="680" y="142" width="82" height="27" />
+          <dc:Bounds x="936" y="355" width="51" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1gemenz_di" bpmnElement="InitalFormApprovedByManagerEvent">
         <dc:Bounds x="902" y="172" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="894" y="122" width="51" height="40" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0as9jdk_di" bpmnElement="MgrGateway">
-        <dc:Bounds x="795" y="165" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="794" y="242" width="52" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0u65ips_di" bpmnElement="ManagerChecks">
-        <dc:Bounds x="520" y="80" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0dirbs5_di" bpmnElement="InitalFormRejectedByDirectorEvent">
-        <dc:Bounds x="802" y="402" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="848" y="406" width="84" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0aqhoj0_di" bpmnElement="InitalFormApprovedByDirectorEvent">
-        <dc:Bounds x="942" y="312" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="936" y="355" width="51" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0ikl09k_di" bpmnElement="InformSenderAboutRejection">
@@ -354,17 +309,17 @@
           <dc:Bounds x="696" y="685" width="52" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_097tazs_di" bpmnElement="BOUDirectorRejectedVerifiedFormEvent">
-        <dc:Bounds x="1232" y="472" width="36" height="36" />
+      <bpmndi:BPMNShape id="Activity_0kwp0ct_di" bpmnElement="SmeChecks">
+        <dc:Bounds x="1060" y="290" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_08rjt13_di" bpmnElement="VerificationCompleteEvent">
+        <dc:Bounds x="1232" y="312" width="36" height="36" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1210" y="515" width="82" height="27" />
+          <dc:Bounds x="1222" y="355" width="58" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1qlpgbn_di" bpmnElement="TimerEvent">
-        <dc:Bounds x="1232" y="612" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1210" y="655" width="81" height="27" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="Activity_0wv8x98_di" bpmnElement="BOUDirectorChecksVerifiedForm">
+        <dc:Bounds x="1340" y="290" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0hqx0ur_di" bpmnElement="BOUDirectorAcceptedVerifiedFormEvent">
         <dc:Bounds x="1612" y="312" width="36" height="36" />
@@ -374,6 +329,51 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0ecgza8_di" bpmnElement="InformAboutAcceptedForm">
         <dc:Bounds x="1710" y="290" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_16algeb_di" bpmnElement="ProcessEnded">
+        <dc:Bounds x="1872" y="312" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1862" y="355" width="58" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0dirbs5_di" bpmnElement="InitalFormRejectedByDirectorEvent">
+        <dc:Bounds x="802" y="402" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="848" y="406" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1nyms3x_di" bpmnElement="InitalFormRejectedByManagerEvent">
+        <dc:Bounds x="702" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="680" y="142" width="82" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_097tazs_di" bpmnElement="BOUDirectorRejectedVerifiedFormEvent">
+        <dc:Bounds x="1232" y="472" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1210" y="515" width="82" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0as9jdk_di" bpmnElement="MgrGateway">
+        <dc:Bounds x="795" y="165" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="794" y="242" width="52" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_05wcvv9_di" bpmnElement="DirectrorGateway">
+        <dc:Bounds x="795" y="305" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="805" y="443" width="89" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0uopjvx_di" bpmnElement="BouGateway">
+        <dc:Bounds x="1495" y="305" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1qlpgbn_di" bpmnElement="TimerEvent">
+        <dc:Bounds x="1232" y="612" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1210" y="655" width="81" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

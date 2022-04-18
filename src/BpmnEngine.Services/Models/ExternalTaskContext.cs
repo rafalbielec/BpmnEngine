@@ -30,11 +30,11 @@ public class ExternalTaskContext
             UserJobPosition = position.AsString();
         else
             throw new MissingVariableException(ServicesConstants.FormHandlingVariables.Position);
-
-        if (externalTask.Variables.TryGetValue(ServicesConstants.FormHandlingVariables.Supervisor, out var supervisor))
-            UserSupervisor = supervisor.AsString();
+        
+        if (externalTask.Variables.TryGetValue(ServicesConstants.FormHandlingVariables.UserName, out var user))
+            UserName = user.AsString();
         else
-            throw new MissingVariableException(ServicesConstants.FormHandlingVariables.Supervisor);
+            throw new MissingVariableException(ServicesConstants.FormHandlingVariables.UserName);
     }
 
     public IDictionary<string, Variable> Variables { get; set; }
@@ -46,7 +46,7 @@ public class ExternalTaskContext
     public string LastStep { get; }
 
     public string UserJobPosition { get; }
-    public string UserSupervisor { get; }
+    public string UserName { get; }
 
     public void UpdateLastStep()
     {

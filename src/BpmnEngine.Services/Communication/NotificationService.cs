@@ -9,12 +9,16 @@ public class NotificationService : INotificationService
 {
     private readonly IFormsRepository _formsRepository;
     private readonly IUserActionsRepository _repository;
+    private readonly SmtpOptions _options;
     private readonly ILogger<NotificationService> _logger;
 
-    public NotificationService(IFormsRepository formsRepository, IUserActionsRepository repository, ILogger<NotificationService> logger)
+    public NotificationService(IFormsRepository formsRepository, IUserActionsRepository repository,
+        SmtpOptions options,
+        ILogger<NotificationService> logger)
     {
         _formsRepository = formsRepository;
         _repository = repository;
+        _options = options;
         _logger = logger;
     }
 
@@ -25,15 +29,15 @@ public class NotificationService : INotificationService
         return exists;
     }
 
-    public async Task<bool> SendNotificationAsync(Guid actionId, Guid processId, string topicName, CancellationToken cancellationToken)
+    public async Task<bool> SendNotificationAsync(Guid actionId, Guid processId, 
+        string topicName,
+        string userName, CancellationToken cancellationToken)
     {
-        _logger.LogInformation($"Adding {actionId}");
-
         var ix = await _repository.InsertUserActionAsync(actionId, processId, topicName, cancellationToken);
 
         if (ix > 0)
         {
-            var body = $"https://localhost:7000/processes/decision/{actionId}";
+            var body = $"Użytkownik {userName} złożył wniosek.<br/><a href='https://localhost:7000/processes/decision/{actionId}'>Link do podjęcia decyzji.</a>";
 
             _logger.LogInformation(body);
 
@@ -62,8 +66,10 @@ public class NotificationService : INotificationService
     {
         try
         {
-            var mailObj = new MailMessage("camunda@mail.local", "raf@mail.local", subject, body);
-            var smtpClient = new SmtpClient("127.0.0.1");
+            var mailObj = new MailMessage(_options.From, _options.To, subject, body);
+            mailObj.IsBodyHtml = true;
+
+            var smtpClient = new SmtpClient(_options.Host, _options.Port);
 
             smtpClient.Send(mailObj);
         }

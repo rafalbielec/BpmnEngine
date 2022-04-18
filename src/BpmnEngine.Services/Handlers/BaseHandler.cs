@@ -34,7 +34,9 @@ public abstract class BaseHandler<T>
         var saved = await _notificationService.SendNotificationAsync(
             context.TaskId, 
             context.ProcessInstanceId, 
-            context.TopicName, cancellationToken);
+            context.TopicName, 
+            context.UserName,
+            cancellationToken);
 
         if (saved)
         {

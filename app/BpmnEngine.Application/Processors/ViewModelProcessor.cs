@@ -1,22 +1,27 @@
-﻿using BpmnEngine.Application.Models;
+﻿using System.Security.Principal;
+using BpmnEngine.Application.Models;
 using BpmnEngine.Camunda.Abstractions;
 using BpmnEngine.Camunda.External;
 using BpmnEngine.Services;
 using BpmnEngine.Services.Abstractions;
 using BpmnEngine.Services.Processes.Models;
 using BpmnEngine.Storage;
+using BpmnEngine.Storage.Abstractions;
 
 namespace BpmnEngine.Application.Processors;
 
 public class ViewModelProcessor : IViewModelProcessor
 {
+    private readonly IUsersRepository _repository;
     private readonly IProcessRequestHandlingService _service;
     private readonly IMessageClient _client;
     
     public ViewModelProcessor(
+        IUsersRepository repository,
         IProcessRequestHandlingService service, 
         IMessageClient client)
     {
+        _repository = repository;
         _service = service;
         _client = client;
     }
@@ -40,28 +45,37 @@ public class ViewModelProcessor : IViewModelProcessor
     }
 
     /// <summary>
-    ///     Converts user profile to process variables.
+    ///     Converts user identity profile to process variables.
     /// </summary>
-    private static void AddUserVariables<T>(T model, IDictionary<string, Variable> variables) where T : BaseViewModel
+    private async Task AddUserVariablesAsync(IIdentity userIdentity, IDictionary<string, Variable> variables)
     {
-        variables[ServicesConstants.FormHandlingVariables.Supervisor] = Variable.String(ServicesConstants.FormHandlingVariables.Manager);
-        variables[ServicesConstants.FormHandlingVariables.Position] = Variable.String(ServicesConstants.FormHandlingVariables.Employee);
+        var user = await _repository.SelectByUserName(userIdentity.Name!);
+
+        if (user != null)
+        {
+            variables[ServicesConstants.FormHandlingVariables.Position] = Variable.String(user.JobPosition);
+            variables[ServicesConstants.FormHandlingVariables.UserName] = Variable.String(user.NormalizedUserName);
+        }
+        else
+            throw new Exception($"Cannot find {userIdentity.Name} in the list of users");
     }
 
     /// <summary>
     ///     Starts the process in the BPMN engine.
     /// </summary>
-    public async Task<ProcessInfoViewModel> ProcessViewModelAsync<T>(T model) where T : BaseViewModel
+    public async Task<ProcessInfoViewModel> ProcessViewModelAsync<T>(T model, IIdentity userIdentity) where T : BaseViewModel
     {
         var variables = new Dictionary<string, Variable>
         {
             [ServicesConstants.FormHandlingVariables.LastStep] = Variable.String(ServicesConstants.FormHandlingVariables.Start)
         };
 
-        AddUserVariables(model, variables);
+        await AddUserVariablesAsync(userIdentity, variables);
+
         AddViewModelVariable(model, variables);
-        
-        var request = new ProcessRequest(StorageConstants.ProcessName.CarHire, variables);
+
+        var processName = MapViewModelToProcessName(model);
+        var request = new ProcessRequest(processName, variables);
 
         var response = await _service.StartProcessAsync(request);
 
@@ -72,6 +86,18 @@ public class ViewModelProcessor : IViewModelProcessor
         };
 
         return processInfo;
+    }
+
+    private static StorageConstants.ProcessName MapViewModelToProcessName<T>(T model) where T : BaseViewModel
+    {
+        var processName = model switch
+        {
+            CarHireViewModel => StorageConstants.ProcessName.CarHire,
+            RoomBookingViewModel => StorageConstants.ProcessName.RoomBooking,
+            _ => StorageConstants.ProcessName.Test
+        };
+
+        return processName;
     }
 
     public async Task<MessageInfoViewModel> ProcessMessagesViewModelAsync(MessagesViewModel model)

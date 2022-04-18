@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics;
 using BpmnEngine.Application.Models;
 using BpmnEngine.Application.Processors;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BpmnEngine.Application.Controllers;
 
 [Route("forms")]
+[Authorize]
 public class FormsController : Controller
 {
     private readonly IViewModelProvider _provider;
@@ -32,6 +34,7 @@ public class FormsController : Controller
     }
     
     [HttpGet("messages")]
+    [AllowAnonymous]
     public IActionResult Messages()
     {
         var model = new MessagesViewModel();
@@ -40,6 +43,7 @@ public class FormsController : Controller
     }
 
     [HttpPost("messages")]
+    [AllowAnonymous]
     public async Task<IActionResult> Messages(MessagesViewModel model)
     {
         if (!ModelState.IsValid)
@@ -68,9 +72,14 @@ public class FormsController : Controller
             return View(model);
         }
 
-        var viewModel = await _processor.ProcessViewModelAsync(model);
+        if (User.Identity is {IsAuthenticated: true})
+        {
+            var viewModel = await _processor.ProcessViewModelAsync(model, User.Identity);
         
-        return View("ProcessInfo", viewModel);
+            return View("ProcessInfo", viewModel);
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 
     [HttpGet("room_booking")]
@@ -89,8 +98,13 @@ public class FormsController : Controller
             return View(model);
         }
 
-        var viewModel = await _processor.ProcessViewModelAsync(model);
+        if (User.Identity is { IsAuthenticated: true })
+        {
+            var viewModel = await _processor.ProcessViewModelAsync(model, User.Identity);
 
-        return View("ProcessInfo", viewModel);
+            return View("ProcessInfo", viewModel);
+        }
+
+        return RedirectToAction("Index", "Home");
     }
 }

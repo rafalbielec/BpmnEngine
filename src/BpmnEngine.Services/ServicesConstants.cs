@@ -29,14 +29,8 @@ public sealed class ServicesConstants
     {
         public const string Start = "start";
         public const string LastStep = "last_step";
-        public const string Supervisor = "supervisor";
-        public const string Manager = "manager";
-        public const string None = "none";
-        public const string Employee = "employee";
-        public const string Director = "director";
-        public const string BouVerification = "bou_verification";
-        public const string BouDirector = "bou_director";
         public const string Position = "position";
+        public const string UserName = "user_name";
 
         public const string PhoneNumber = "phone_number";
         public const string Destination = "destination";

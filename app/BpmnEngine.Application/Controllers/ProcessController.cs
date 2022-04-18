@@ -1,10 +1,12 @@
 ﻿using BpmnEngine.Application.Models;
 using BpmnEngine.Services.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BpmnEngine.Application.Controllers;
 
 [Route("processes")]
+[AllowAnonymous]
 public class ProcessController : Controller
 {
     private readonly IDecisionService _decisionService;

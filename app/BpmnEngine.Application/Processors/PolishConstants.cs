@@ -2,6 +2,9 @@
 
 public sealed class PolishConstants
 {
+    public const string UserNameLabel = "Użytkownik";
+    public const string PasswordLabel = "Hasło";
+
     public const string RequiredLabel = "Pole wymagane";
     public const string PhoneNumberLabel = "Telefon kontaktowy";
     public const string DestinationLabel = "Przejazd do";
@@ -11,4 +14,5 @@ public sealed class PolishConstants
     public const string MessageContentLabel = "Treść wiadomości";
 
     public const string MissingBusinessKeyError = "Brak klucza biznesowego";
+    public const string WrongCredentials = "Złe dane logowania";
 }

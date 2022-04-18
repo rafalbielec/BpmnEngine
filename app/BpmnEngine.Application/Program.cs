@@ -7,6 +7,9 @@ using BpmnEngine.Services.Handlers;
 using BpmnEngine.Services.Processes;
 using BpmnEngine.Storage;
 using BpmnEngine.Storage.Abstractions;
+using BpmnEngine.Storage.Entities;
+using BpmnEngine.Storage.Stores;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,11 +24,40 @@ builder.Services.AddTransient<IDecisionService, DecisionService>();
 builder.Services.AddTransient<INotificationService, NotificationService>();
 builder.Services.AddTransient<IProcessRequestHandlingService, ProcessRequestHandlingService>();
 
+builder.Services
+    .AddAuthorization()
+    .AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultSignInScheme = IdentityConstants.ApplicationScheme;
+        options.DefaultSignOutScheme = IdentityConstants.ApplicationScheme;
+    })
+    .AddCookie(IdentityConstants.ApplicationScheme, options =>
+    {
+        options.LoginPath = new PathString("/");
+        options.LogoutPath = new PathString("/logout");
+        options.AccessDeniedPath = new PathString("/");
+        options.SlidingExpiration = true;
+    });
+
+builder.Services.AddIdentityCore<UserEntity>()
+    .AddUserStore<UserStore>()
+    .AddSignInManager();
+
 var configuration = builder.Configuration;
 
 var engineRestUri = configuration.GetRequiredSection(CamundaConstants.EngineRestAddress).Value;
 
+var options = configuration.GetSection(nameof(SmtpOptions)).Get<SmtpOptions>();
+
+builder.Services.AddSingleton(options);
+
 builder.Services.AddTransient<IFormsRepository>(_ => new FormsRepository(
+    configuration.GetConnectionString(StorageConstants.ConnectionStringName)));
+
+builder.Services.AddTransient<IUsersRepository>(_ => new UsersRepository(
     configuration.GetConnectionString(StorageConstants.ConnectionStringName)));
 
 builder.Services.AddTransient<IUserActionsRepository>(_ => new UserActionsRepository(
@@ -60,7 +92,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/error");
     app.UseHsts();
 }
 
@@ -69,6 +101,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

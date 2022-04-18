@@ -1,11 +1,13 @@
 ﻿using BpmnEngine.Camunda.Abstractions;
 using BpmnEngine.Camunda.External;
 using BpmnEngine.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BpmnEngine.Application.Controllers;
 
 [Route("api")]
+[AllowAnonymous]
 public class ApiController : ControllerBase
 {
     private readonly IProcessClient _client;
