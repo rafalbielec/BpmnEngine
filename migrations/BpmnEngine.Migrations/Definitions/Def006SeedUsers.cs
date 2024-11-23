@@ -14,7 +14,7 @@ public class Def006SeedUsers : Migration
         var employee = new
         {
             id = new Guid("63387fa5-68ab-401d-8bea-d4bc09845075"),
-            user_name = "employee@ezdrp.pl",
+            user_name = "employee@test.pl",
             position = "employee",
             password = pass
         };
@@ -22,7 +22,7 @@ public class Def006SeedUsers : Migration
         var manager = new
         {
             id = new Guid("32a43ea2-2364-49e3-b5f8-1098f60d714a"),
-            user_name = "manager@ezdrp.pl",
+            user_name = "manager@test.pl",
             position = "manager",
             password = pass
         };
@@ -30,7 +30,7 @@ public class Def006SeedUsers : Migration
         var director = new
         {
             id = new Guid("5fa2ebdf-803f-45ed-80d6-ae1a1bd5e951"),
-            user_name = "director@ezdrp.pl",
+            user_name = "director@test.pl",
             position = "director",
             password = pass
         };
